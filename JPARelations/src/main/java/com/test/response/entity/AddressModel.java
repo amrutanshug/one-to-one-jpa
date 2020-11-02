@@ -1,17 +1,6 @@
-package com.test.entity;
+package com.test.response.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-
-@Entity
-public class Address {
-	
-	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+public class AddressModel {
 	private Long addressProofId;
 	private String houseNo;
 	private String street;
@@ -19,19 +8,20 @@ public class Address {
 	private String state;
 	private String country;
 	
-	@OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
-	private Employee employee;
+	public AddressModel() {
+		
+	}
 	
-	
-	public Address() {
+	public AddressModel(Long addressProofId, String houseNo, String street, String city, String state, String country) {
 		super();
+		this.addressProofId = addressProofId;
+		this.houseNo = houseNo;
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.country = country;
 	}
-	public Employee getEmployee() {
-		return employee;
-	}
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
+	
 	public Long getAddressProofId() {
 		return addressProofId;
 	}
@@ -68,12 +58,13 @@ public class Address {
 	public void setCountry(String country) {
 		this.country = country;
 	}
+
 	@Override
 	public String toString() {
-		return "Address [addressProofId=" + addressProofId + ", houseNo=" + houseNo + ", street=" + street + ", city="
-				+ city + ", state=" + state + ", country=" + country + ", employee=" + employee + "]";
+		return "AddressModel [addressProofId=" + addressProofId + ", houseNo=" + houseNo + ", street=" + street
+				+ ", city=" + city + ", state=" + state + ", country=" + country + "]";
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -81,13 +72,12 @@ public class Address {
 		result = prime * result + ((addressProofId == null) ? 0 : addressProofId.hashCode());
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
-		result = prime * result + ((employee == null) ? 0 : employee.hashCode());
 		result = prime * result + ((houseNo == null) ? 0 : houseNo.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((street == null) ? 0 : street.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -96,7 +86,7 @@ public class Address {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Address other = (Address) obj;
+		AddressModel other = (AddressModel) obj;
 		if (addressProofId == null) {
 			if (other.addressProofId != null)
 				return false;
@@ -111,11 +101,6 @@ public class Address {
 			if (other.country != null)
 				return false;
 		} else if (!country.equals(other.country))
-			return false;
-		if (employee == null) {
-			if (other.employee != null)
-				return false;
-		} else if (!employee.equals(other.employee))
 			return false;
 		if (houseNo == null) {
 			if (other.houseNo != null)
