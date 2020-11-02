@@ -5,13 +5,18 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.test.entity.Address;
 import com.test.entity.Employee;
+import com.test.repository.AddressRepository;
 import com.test.repository.EmployeeRepository;
 import com.test.response.entity.AddressModel;
 import com.test.response.entity.EmployeeModel;
@@ -21,6 +26,8 @@ public class EmployeeController {
 	
 	@Autowired
 	EmployeeRepository employeeRepository;
+	@Autowired
+	AddressRepository addressRepository;
 	@GetMapping(value = "/getAllEmployee")
 	public List<EmployeeModel> getAllEmployees () {
 		List<Employee> employees = new ArrayList<>();
@@ -42,26 +49,35 @@ public class EmployeeController {
 	}
 	
 	@GetMapping(value = "/employee/{id}/address")
-	public AddressModel getAddressByEmployeeId(@PathVariable Long id) {
+	public ResponseEntity<AddressModel> getAddressByEmployeeId(@PathVariable Long id) {
 		Optional<Employee> employee = employeeRepository.findById(id);
+		if(employee.isPresent()) {
 		Employee e2 = employee.get();
-		/*
-		 * Address address = new Address();
-		 * address.setAddressProofId(e2.getAddress().getAddressProofId());
-		 * address.setCity(e2.getAddress().getCity());
-		 * address.setCountry(e2.getAddress().getCountry());
-		 * address.setHouseNo(e2.getAddress().getHouseNo());
-		 * address.setState(e2.getAddress().getState());
-		 * address.setStreet(e2.getAddress().getStreet());
-		 * 
-		 * Employee returnE = new Employee(); returnE.setId(e2.getId());
-		 * returnE.setName(e2.getName()); returnE.setPosition(e2.getPosition());
-		 * address.setEmployee(returnE);
-		 */
-		
 		AddressModel responseAddress = new AddressModel(e2.getAddress().getAddressProofId(),e2.getAddress().getHouseNo(),
 				e2.getAddress().getStreet(),e2.getAddress().getCity(),e2.getAddress().getState(),e2.getAddress().getCountry());
-		return responseAddress;
+		return new ResponseEntity<AddressModel>(responseAddress, HttpStatus.ACCEPTED);
+		} else {
+			return new ResponseEntity<> (HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@PutMapping(value = "/employee/{id}/address")
+	public void updateAdressByEmployeeId(@PathVariable Long id, @RequestBody AddressModel address) {
+		
+		//ResponseEntity<T> responseEntity = 
+		
+		Optional<Employee> employee = employeeRepository.findById(id);
+		Address address2 = employee.get().getAddress();
+		address2.setCity(address.getCity());
+		address2.setCountry(address.getCountry());
+		address2.setHouseNo(address.getHouseNo());
+		address2.setState(address.getState());
+		address2.setStreet(address.getStreet());
+		try {
+		addressRepository.save(address2);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	

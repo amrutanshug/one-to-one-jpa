@@ -1,5 +1,6 @@
 package com.test.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ public class Address {
 	private String state;
 	private String country;
 	
-	@OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "address", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Employee employee;
 	
 	
