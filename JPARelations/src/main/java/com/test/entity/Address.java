@@ -2,6 +2,7 @@ package com.test.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,8 +21,7 @@ public class Address {
 	private String state;
 	private String country;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn (name = "id", referencedColumnName = "id", insertable = true, updatable = true)
+	@OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
 	private Employee employee;
 	
 	
