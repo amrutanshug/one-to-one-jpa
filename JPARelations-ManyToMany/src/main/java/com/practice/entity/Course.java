@@ -22,16 +22,17 @@ public class Course {
 	@ManyToMany (mappedBy = "courses", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Student> students;
 	
-	
+
 	public Course() {
 		
 	}
 	
-	public Course(String courseName, String description, Float durationInYears) {
+	public Course(String courseName, String description, Float durationInYears, Set<Student> students) {
 		super();
 		this.courseName = courseName;
 		this.description = description;
 		this.durationInYears = durationInYears;
+		this.students = students;
 	}
 	public String getCourseName() {
 		return courseName;
@@ -51,49 +52,13 @@ public class Course {
 	public void setDurationInYears(Float durationInYears) {
 		this.durationInYears = durationInYears;
 	}
-
-	@Override
-	public String toString() {
-		return "Course [courseName=" + courseName + ", description=" + description + ", durationInYears="
-				+ durationInYears + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((courseName == null) ? 0 : courseName.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((durationInYears == null) ? 0 : durationInYears.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Course other = (Course) obj;
-		if (courseName == null) {
-			if (other.courseName != null)
-				return false;
-		} else if (!courseName.equals(other.courseName))
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (durationInYears == null) {
-			if (other.durationInYears != null)
-				return false;
-		} else if (!durationInYears.equals(other.durationInYears))
-			return false;
-		return true;
-	}
 	
+	public Set<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(Set<Student> students) {
+		this.students = students;
+	}
 	
 }

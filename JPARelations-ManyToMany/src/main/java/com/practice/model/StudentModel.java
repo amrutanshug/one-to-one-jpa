@@ -75,9 +75,6 @@ public class StudentModel {
 		} else if (!rollNo.equals(other.rollNo))
 			return false;
 		return true;
-	}
-	
-	
-	
+	}	
 	
 }
