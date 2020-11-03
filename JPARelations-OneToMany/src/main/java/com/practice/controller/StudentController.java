@@ -16,7 +16,6 @@ import com.practice.entity.ClassOfStudent;
 import com.practice.entity.Student;
 import com.practice.repository.ClassRepository;
 import com.practice.repository.StudentRepository;
-import com.practice.responsemodel.ClassModel;
 import com.practice.responsemodel.StudentModel;
 
 @Controller
