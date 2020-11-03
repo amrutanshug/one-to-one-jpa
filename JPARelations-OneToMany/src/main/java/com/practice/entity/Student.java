@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Student {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long rollNo;
 	private String name;
 	private Float marks;

@@ -34,9 +34,7 @@ public class ClassController {
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 		Gson gson = new Gson();
 		if(response.getStatusCode().equals(HttpStatus.OK) && response.getBody() != null) {
-			List<ClassModel> classesString = gson.fromJson(response.getBody(), new TypeToken<List<ClassModel>>() {}.getType());
-		 //= gson.to(response.getBody(), List<ClassModel>.class);
-		
+			List<ClassModel> classesString = gson.fromJson(response.getBody(), new TypeToken<List<ClassModel>>() {}.getType());		
 			return new ResponseEntity<> (classesString, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<> (HttpStatus.NOT_FOUND);

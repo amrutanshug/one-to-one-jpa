@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.practice.entity.ClassOfStudent;
@@ -70,6 +72,69 @@ public class StudentController {
 		} catch (Exception e){
 		return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@PostMapping("/insertMultipleStudents")
+	public ResponseEntity<HttpStatus> insertMultipleStudents(@RequestBody List<StudentModel> studentsToBeAdded){
+		Optional<ClassOfStudent> classNineth = classRepository.findById(9);
+		Optional<ClassOfStudent> classTenth = classRepository.findById(10);
+		List<Student> studentsToAdd = new ArrayList<Student>();
+		if(studentsToBeAdded != null) {
+			for (StudentModel studentModel : studentsToBeAdded) {
+				if(studentModel.getRollNo()>10) {
+					Student stu = new Student();
+					stu.setMarks(studentModel.getMarks());
+					stu.setName(studentModel.getName());
+					stu.setRollNo(studentModel.getRollNo());
+					if(classNineth.isEmpty()) {
+						ClassOfStudent ninethClass = new ClassOfStudent(9, "Nineth class", "school3");
+						stu.setClassOfStudent(ninethClass);
+						
+					} else {
+						stu.setClassOfStudent(classNineth.get());
+					}
+					studentsToAdd.add(stu);
+										
+				} else {
+					Student stu = new Student();
+					stu.setMarks(studentModel.getMarks());
+					stu.setName(studentModel.getName());
+					stu.setRollNo(studentModel.getRollNo());
+					
+					
+					if(classTenth.isEmpty()) {
+						ClassOfStudent tenthClass = new ClassOfStudent(10, "Tenth class", "school3");
+						stu.setClassOfStudent(tenthClass);
+					} else {
+						stu.setClassOfStudent(classTenth.get());
+					}
+					studentsToAdd.add(stu);
+				}
+				
+			}
+			studentRepository.saveAll(studentsToAdd);
+			return new ResponseEntity<HttpStatus> (HttpStatus.OK);
+		} else {
+			return new ResponseEntity<HttpStatus> (HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	@PostMapping("/updateStudentBasedOnRollNo/{classNo}/{rollNo}")
+	public ResponseEntity<HttpStatus> updateStudentBasedOnRollNo(@PathVariable Integer classNo, @PathVariable Long rollNo){
+		try {
+			Optional<ClassOfStudent> desiredClass = classRepository.findById(classNo);
+			if(desiredClass.isEmpty()) {
+				ClassOfStudent desired = new ClassOfStudent(classNo, classNo+"th class", "school3");
+				classRepository.save(desired);
+			}
+			studentRepository.assignClassesToStudentUsingJPQL(classNo, rollNo);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<HttpStatus> (HttpStatus.BAD_REQUEST);
+		}
+		
+
 	}
 	
 }
